@@ -3,9 +3,6 @@ package cz.cvut.fit.hanespat.data.dto;
 import lombok.Getter;
 import java.util.List;
 
-/**
- * DTO (Data transfer object) used for data encapsulation of a object from database.
- */
 public class DeliveryBoyDTO {
 
     @Getter private final int id;
