@@ -1,6 +1,6 @@
 package cz.cvut.fit.hanespat.service;
 
-import cz.cvut.fit.hanespat.business.services.DeliveryAreaService;
+import cz.cvut.fit.hanespat.services.DeliveryAreaService;
 import cz.cvut.fit.hanespat.data.dto.DeliveryAreaDTO;
 import cz.cvut.fit.hanespat.data.dto.create.DeliveryAreaCreateDTO;
 import cz.cvut.fit.hanespat.data.entity.Address;

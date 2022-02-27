@@ -1,6 +1,6 @@
 package cz.cvut.fit.hanespat.service;
 
-import cz.cvut.fit.hanespat.business.services.AddressService;
+import cz.cvut.fit.hanespat.services.AddressService;
 import cz.cvut.fit.hanespat.data.dto.AddressDTO;
 import cz.cvut.fit.hanespat.data.dto.create.AddressCreateDTO;
 import cz.cvut.fit.hanespat.data.entity.Address;

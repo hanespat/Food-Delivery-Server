@@ -1,4 +1,4 @@
-package cz.cvut.fit.hanespat.business.services;
+package cz.cvut.fit.hanespat.services;
 
 import cz.cvut.fit.hanespat.data.dto.DeliveryAreaDTO;
 import cz.cvut.fit.hanespat.data.dto.create.DeliveryAreaCreateDTO;
@@ -11,7 +11,6 @@ import cz.cvut.fit.hanespat.data.repository.DeliveryBoyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package cz.cvut.fit.hanespat.business.services;
+package cz.cvut.fit.hanespat.services;
 
 import cz.cvut.fit.hanespat.data.dto.create.DeliveryBoyCreateDTO;
 import cz.cvut.fit.hanespat.data.dto.DeliveryBoyDTO;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @Service
 public class DeliveryBoyService {
