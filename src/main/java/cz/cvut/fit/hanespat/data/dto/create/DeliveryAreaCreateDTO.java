@@ -1,7 +1,6 @@
 package cz.cvut.fit.hanespat.data.dto.create;
 
 import lombok.Getter;
-
 import java.util.List;
 
 public class DeliveryAreaCreateDTO {
