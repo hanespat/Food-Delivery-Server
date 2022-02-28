@@ -1,13 +1,15 @@
 package cz.cvut.fit.hanespat.data.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class AddressDTO {
-    @Getter private final int id;
-    @Getter private final int houseNumber;
-    @Getter private final String street;
-    @Getter private final String zipCode;
-    @Getter private final int deliveryAreaId;
+    @Getter private int id;
+    @Getter private int houseNumber;
+    @Getter private String street;
+    @Getter private String zipCode;
+    @Getter private int deliveryAreaId;
 
     public AddressDTO(int id, int houseNumber, String street, String zipCode, int deliveryAreaId) {
         this.id = id;

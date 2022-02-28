@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class DeliveryBoyServiceTest {
 
     @Autowired
