@@ -58,7 +58,7 @@ class AddressServiceTest {
         DeliveryArea deliveryArea = new DeliveryArea( "Test name", Collections.emptyList() );
         Address address = new Address( 2, "Test street", "Test zipcode", deliveryArea  );
         AddressCreateDTO addressUpdatedDTO = new AddressCreateDTO( 3, "New Test street", "New Test zipcode", deliveryArea.getId() );
-        AddressDTO expectedAddress = new AddressDTO( address.getId(), addressUpdatedDTO.getHouseNumber(), addressUpdatedDTO.getStreet(), addressUpdatedDTO.getZipCode(), addressUpdatedDTO.getDeliveryAreaId() );
+        AddressDTO expectedAddress = new AddressDTO( address.getId(), addressUpdatedDTO.houseNumber(), addressUpdatedDTO.street(), addressUpdatedDTO.zipCode(), addressUpdatedDTO.deliveryAreaId() );
 
         // Case: Delivery Area is found, address is found, returns the updated address DTO
         BDDMockito.given( addressRepository.findById( address.getId() ) ).willReturn( Optional.of( address ) );
@@ -134,11 +134,11 @@ class AddressServiceTest {
 
     // Private method used for comparing DTO address objects
     private boolean compareDTO ( AddressDTO a, AddressDTO b ) {
-        return (( a.getId() == b.getId() ) &&
-                ( a.getHouseNumber() == b.getHouseNumber() ) &&
-                ( a.getStreet().equals( b.getStreet() ) ) &&
-                ( a.getZipCode().equals( b.getZipCode() )) &&
-                (a.getDeliveryAreaId() == b.getDeliveryAreaId() ) ) ;
+        return (( a.id() == b.id() ) &&
+                ( a.houseNumber() == b.houseNumber() ) &&
+                ( a.street().equals( b.street() ) ) &&
+                ( a.zipCode().equals( b.zipCode() )) &&
+                (a.deliveryAreaId() == b.deliveryAreaId() ) ) ;
     }
 }
 

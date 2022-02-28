@@ -34,7 +34,7 @@ class DeliveryAreaControllerTest {
     @Test
     void create() throws Exception {
         DeliveryAreaCreateDTO deliveryAreaCreateDTO = new DeliveryAreaCreateDTO( "Test name", Collections.emptyList() );
-        DeliveryAreaDTO deliveryAreaDTO = new DeliveryAreaDTO( 1,deliveryAreaCreateDTO.getName(), deliveryAreaCreateDTO.getDeliveryBoyIds() );
+        DeliveryAreaDTO deliveryAreaDTO = new DeliveryAreaDTO( 1,deliveryAreaCreateDTO.name(), deliveryAreaCreateDTO.deliveryBoyIds() );
 
         // Case: Delivery area is created, status OK and DTO of the delivery area is returned
         BDDMockito.given( deliveryAreaService.create( Mockito.any()) ).willReturn( Optional.of(deliveryAreaDTO) );
@@ -45,9 +45,9 @@ class DeliveryAreaControllerTest {
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaCreateDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isCreated() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.getName() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.getDeliveryBoyIds() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.name() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.deliveryBoyIds() )));
         Mockito.verify( deliveryAreaService, Mockito.atLeastOnce()).create( Mockito.any() );
 
         // Case: Delivery area is not created, status NOT FOUND
@@ -70,21 +70,21 @@ class DeliveryAreaControllerTest {
         BDDMockito.given( deliveryAreaService.findById( Mockito.any( Integer.class )) ).willReturn( Optional.of(deliveryAreaDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/delivery_area/{id}", deliveryAreaDTO.getId())
+                        .get("/delivery_area/{id}", deliveryAreaDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.getName() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.getDeliveryBoyIds() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.name() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.deliveryBoyIds() )));
         Mockito.verify( deliveryAreaService, Mockito.atLeastOnce()).findById( Mockito.any( Integer.class ) );
 
         // Case: Delivery area is not deleted, status NOT FOUND
         BDDMockito.given( deliveryAreaService.findById( Mockito.any( Integer.class )) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/delivery_area/{id}", deliveryAreaDTO.getId())
+                        .get("/delivery_area/{id}", deliveryAreaDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaDTO ) )
@@ -106,30 +106,30 @@ class DeliveryAreaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].id", Matchers.containsInAnyOrder( deliveryAreaDTO_A.getId(), deliveryAreaDTO_B.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].name", Matchers.containsInAnyOrder( deliveryAreaDTO_A.getName(), deliveryAreaDTO_B.getName() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].deliveryBoyIds", Matchers.containsInAnyOrder( deliveryAreaDTO_A.getDeliveryBoyIds(), deliveryAreaDTO_B.getDeliveryBoyIds() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].id", Matchers.containsInAnyOrder( deliveryAreaDTO_A.id(), deliveryAreaDTO_B.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].name", Matchers.containsInAnyOrder( deliveryAreaDTO_A.name(), deliveryAreaDTO_B.name() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].deliveryBoyIds", Matchers.containsInAnyOrder( deliveryAreaDTO_A.deliveryBoyIds(), deliveryAreaDTO_B.deliveryBoyIds() )));
         Mockito.verify( deliveryAreaService, Mockito.atLeastOnce()).findAll();
     }
 
     @Test
     void update() throws Exception {
         DeliveryAreaDTO deliveryAreaDTO = new DeliveryAreaDTO( 1,"Test name", Collections.emptyList() );
-        DeliveryAreaCreateDTO deliveryAreaCreateDTO = new DeliveryAreaCreateDTO( "New test name", deliveryAreaDTO.getDeliveryBoyIds() );
-        DeliveryAreaDTO updatedDTO = new DeliveryAreaDTO( deliveryAreaDTO.getId(), deliveryAreaCreateDTO.getName(), deliveryAreaCreateDTO.getDeliveryBoyIds() );
+        DeliveryAreaCreateDTO deliveryAreaCreateDTO = new DeliveryAreaCreateDTO( "New test name", deliveryAreaDTO.deliveryBoyIds() );
+        DeliveryAreaDTO updatedDTO = new DeliveryAreaDTO( deliveryAreaDTO.id(), deliveryAreaCreateDTO.name(), deliveryAreaCreateDTO.deliveryBoyIds() );
 
         // Case: Delivery area is updated, status OK and DTO of updated delivery area is returned
         BDDMockito.given( deliveryAreaService.update( Mockito.any( Integer.class ), Mockito.any( DeliveryAreaCreateDTO.class ) ) ).willReturn( Optional.of(updatedDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/delivery_area/{id}", deliveryAreaDTO.getId() )
+                        .put("/delivery_area/{id}", deliveryAreaDTO.id() )
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaCreateDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( updatedDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( updatedDTO.getName() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( updatedDTO.getDeliveryBoyIds() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( updatedDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( updatedDTO.name() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( updatedDTO.deliveryBoyIds() )));
         Mockito.verify( deliveryAreaService, Mockito.atLeastOnce()).update( Mockito.any( Integer.class ), Mockito.any( DeliveryAreaCreateDTO.class ) );
 
 
@@ -137,7 +137,7 @@ class DeliveryAreaControllerTest {
         BDDMockito.given( deliveryAreaService.update( Mockito.any( Integer.class ), Mockito.any( DeliveryAreaCreateDTO.class ) ) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/delivery_area/{id}", deliveryAreaDTO.getId() )
+                        .put("/delivery_area/{id}", deliveryAreaDTO.id() )
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaCreateDTO ) )
@@ -154,21 +154,21 @@ class DeliveryAreaControllerTest {
         BDDMockito.given( deliveryAreaService.deleteById( Mockito.any( Integer.class )) ).willReturn( Optional.of(deliveryAreaDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/delivery_area/{id}", deliveryAreaDTO.getId())
+                        .delete("/delivery_area/{id}", deliveryAreaDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.getName() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.getDeliveryBoyIds() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( deliveryAreaDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is( deliveryAreaDTO.name() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryBoyIds", CoreMatchers.is( deliveryAreaDTO.deliveryBoyIds() )));
         Mockito.verify( deliveryAreaService, Mockito.atLeastOnce()).deleteById( Mockito.any( Integer.class ) );
 
         // Case: Delivery area is not deleted, status NOT FOUND
         BDDMockito.given( deliveryAreaService.deleteById( Mockito.any( Integer.class )) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/delivery_area/{id}", deliveryAreaDTO.getId())
+                        .delete("/delivery_area/{id}", deliveryAreaDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( deliveryAreaDTO ) )

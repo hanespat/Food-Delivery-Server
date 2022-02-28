@@ -29,14 +29,14 @@ public class AddressService {
     public Optional<AddressDTO> create(AddressCreateDTO addressDTO) {
 
         // First get delivery area by id, if the area is empty, throw exception
-        Optional<DeliveryArea> deliveryArea = deliveryAreaRepository.findById(addressDTO.getDeliveryAreaId());
+        Optional<DeliveryArea> deliveryArea = deliveryAreaRepository.findById(addressDTO.deliveryAreaId());
         if (deliveryArea.isEmpty())
             return Optional.empty();
 
         Address address = new Address(
-                addressDTO.getHouseNumber(),
-                addressDTO.getStreet(),
-                addressDTO.getZipCode(),
+                addressDTO.houseNumber(),
+                addressDTO.street(),
+                addressDTO.zipCode(),
                 deliveryArea.get()
         );
 
@@ -54,14 +54,14 @@ public class AddressService {
             return Optional.empty();
 
         // Get delivery area by id, if the number of found area is not found, throw exception
-        Optional<DeliveryArea> deliveryArea = deliveryAreaRepository.findById(addressDTO_entry.getDeliveryAreaId());
+        Optional<DeliveryArea> deliveryArea = deliveryAreaRepository.findById(addressDTO_entry.deliveryAreaId());
         if (deliveryArea.isEmpty())
             return Optional.empty();
 
         // Update the found address
-        optionalAddress.get().setHouseNumber(addressDTO_entry.getHouseNumber());
-        optionalAddress.get().setStreet(addressDTO_entry.getStreet());
-        optionalAddress.get().setZipcode(addressDTO_entry.getZipCode());
+        optionalAddress.get().setHouseNumber(addressDTO_entry.houseNumber());
+        optionalAddress.get().setStreet(addressDTO_entry.street());
+        optionalAddress.get().setZipcode(addressDTO_entry.zipCode());
         optionalAddress.get().setDeliveryArea(deliveryArea.get());
         return toDTO(optionalAddress);
     }

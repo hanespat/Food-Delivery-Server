@@ -36,7 +36,7 @@ class AddressControllerTest {
     void create() throws Exception {
         DeliveryArea deliveryArea = new DeliveryArea( "Test name", Collections.emptyList() );
         AddressCreateDTO addressCreateDTO = new AddressCreateDTO( 24, "Test street","Test ", deliveryArea.getId() );
-        AddressDTO addressDTO = new AddressDTO( 1,addressCreateDTO.getHouseNumber(), addressCreateDTO.getStreet(), addressCreateDTO.getZipCode(), addressCreateDTO.getDeliveryAreaId() );
+        AddressDTO addressDTO = new AddressDTO( 1,addressCreateDTO.houseNumber(), addressCreateDTO.street(), addressCreateDTO.zipCode(), addressCreateDTO.deliveryAreaId() );
 
         // Case: Address is created, status OK and DTO of the address is returned
         BDDMockito.given( addressService.create( Mockito.any()) ).willReturn( Optional.of(addressDTO) );
@@ -47,11 +47,11 @@ class AddressControllerTest {
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressCreateDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isCreated() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.getHouseNumber() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.getStreet() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.getZipCode() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.getDeliveryAreaId() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.houseNumber() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.street() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.zipCode() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.deliveryAreaId() )));
         Mockito.verify( addressService, Mockito.atLeastOnce()).create( Mockito.any() );
 
         // Case: Address is not created, status NOT FOUND
@@ -72,22 +72,22 @@ class AddressControllerTest {
         DeliveryArea deliveryArea = new DeliveryArea( "Test name", Collections.emptyList() );
         AddressDTO addressDTO = new AddressDTO( 1,24, "Test street","Test zipcode", deliveryArea.getId() );
         AddressCreateDTO addressCreateDTO = new AddressCreateDTO( 25, "Test new street","Test new", deliveryArea.getId() );
-        AddressDTO updatedDTO = new AddressDTO( addressDTO.getId(), addressCreateDTO.getHouseNumber(), addressCreateDTO.getStreet(), addressCreateDTO.getZipCode(), addressCreateDTO.getDeliveryAreaId() );
+        AddressDTO updatedDTO = new AddressDTO( addressDTO.id(), addressCreateDTO.houseNumber(), addressCreateDTO.street(), addressCreateDTO.zipCode(), addressCreateDTO.deliveryAreaId() );
 
         // Case: Address is updated, status OK and DTO of updated address is returned
         BDDMockito.given( addressService.update( Mockito.any( Integer.class ), Mockito.any( AddressCreateDTO.class ) ) ).willReturn( Optional.of(updatedDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/address/{id}", addressDTO.getId() )
+                        .put("/address/{id}", addressDTO.id() )
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressCreateDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( updatedDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( updatedDTO.getHouseNumber() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( updatedDTO.getStreet() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( updatedDTO.getZipCode() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( updatedDTO.getDeliveryAreaId() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( updatedDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( updatedDTO.houseNumber() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( updatedDTO.street() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( updatedDTO.zipCode() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( updatedDTO.deliveryAreaId() )));
         Mockito.verify( addressService, Mockito.atLeastOnce()).update( Mockito.any( Integer.class ), Mockito.any( AddressCreateDTO.class ) );
 
 
@@ -95,7 +95,7 @@ class AddressControllerTest {
         BDDMockito.given( addressService.update( Mockito.any( Integer.class ), Mockito.any( AddressCreateDTO.class ) ) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .put("/address/{id}", addressDTO.getId() )
+                        .put("/address/{id}", addressDTO.id() )
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressCreateDTO ) )
@@ -113,16 +113,16 @@ class AddressControllerTest {
         BDDMockito.given( addressService.findById( Mockito.any( Integer.class ) ) ).willReturn( Optional.of(addressDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/address/{id}", addressDTO.getId())
+                        .get("/address/{id}", addressDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.getHouseNumber() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.getStreet() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.getZipCode() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.getDeliveryAreaId() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.houseNumber() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.street() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.zipCode() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.deliveryAreaId() )));
         Mockito.verify( addressService, Mockito.atLeastOnce()).findById( Mockito.any( Integer.class ) );
 
 
@@ -130,7 +130,7 @@ class AddressControllerTest {
         BDDMockito.given( addressService.findById( Mockito.any( Integer.class ) ) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .get("/address/{id}", addressDTO.getId())
+                        .get("/address/{id}", addressDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressDTO ) )
@@ -155,10 +155,10 @@ class AddressControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].id", Matchers.containsInAnyOrder( addressDTO_A.getId(), addressDTO_B.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].houseNumber", Matchers.containsInAnyOrder( addressDTO_A.getHouseNumber(), addressDTO_B.getHouseNumber() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].street", Matchers.containsInAnyOrder( addressDTO_A.getStreet(), addressDTO_B.getStreet() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$[*].zipCode", Matchers.containsInAnyOrder( addressDTO_A.getZipCode(), addressDTO_B.getZipCode() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].id", Matchers.containsInAnyOrder( addressDTO_A.id(), addressDTO_B.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].houseNumber", Matchers.containsInAnyOrder( addressDTO_A.houseNumber(), addressDTO_B.houseNumber() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].street", Matchers.containsInAnyOrder( addressDTO_A.street(), addressDTO_B.street() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$[*].zipCode", Matchers.containsInAnyOrder( addressDTO_A.zipCode(), addressDTO_B.zipCode() )))
                 .andExpect( MockMvcResultMatchers.jsonPath("$[*].deliveryAreaId", CoreMatchers.hasItem( deliveryArea.getId() ) ));
         Mockito.verify( addressService, Mockito.atLeastOnce()).findAll();
     }
@@ -173,16 +173,16 @@ class AddressControllerTest {
         BDDMockito.given( addressService.deleteById( Mockito.any( Integer.class ) ) ).willReturn( Optional.of(addressDTO) );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/address/{id}", addressDTO.getId())
+                        .delete("/address/{id}", addressDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressDTO ) )
         ).andExpect( MockMvcResultMatchers.status().isOk() )
-                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.getId() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.getHouseNumber() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.getStreet() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.getZipCode() )))
-                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.getDeliveryAreaId() )));
+                .andExpect( MockMvcResultMatchers.jsonPath("$.id", CoreMatchers.is( addressDTO.id() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.houseNumber", CoreMatchers.is( addressDTO.houseNumber() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.street", CoreMatchers.is( addressDTO.street() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.zipCode", CoreMatchers.is( addressDTO.zipCode() )))
+                .andExpect( MockMvcResultMatchers.jsonPath("$.deliveryAreaId", CoreMatchers.is( addressDTO.deliveryAreaId() )));
         Mockito.verify( addressService, Mockito.atLeastOnce()).deleteById( Mockito.any( Integer.class ) );
 
 
@@ -190,7 +190,7 @@ class AddressControllerTest {
         BDDMockito.given( addressService.deleteById( Mockito.any( Integer.class ) ) ).willReturn( Optional.empty() );
         mockMvc.perform(
                 MockMvcRequestBuilders
-                        .delete("/address/{id}", addressDTO.getId())
+                        .delete("/address/{id}", addressDTO.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept( MediaType.APPLICATION_JSON)
                         .content( toJsonString( addressDTO ) )

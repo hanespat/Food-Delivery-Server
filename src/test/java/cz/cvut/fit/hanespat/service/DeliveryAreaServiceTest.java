@@ -47,13 +47,13 @@ class DeliveryAreaServiceTest {
         DeliveryAreaCreateDTO deliveryAreaCreateDTO = new DeliveryAreaCreateDTO( deliveryArea.getName(), List.of( deliveryBoy.getId() ) );
 
         // Case: Delivery boy ids are found, new Delivery Area is created and saved, method returns DTO of that new deliveryArea
-        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaCreateDTO.getDeliveryBoyIds() ) ).willReturn( List.of( deliveryBoy ) );
+        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaCreateDTO.deliveryBoyIds() ) ).willReturn( List.of( deliveryBoy ) );
         BDDMockito.given( deliveryAreaRepository.save( Mockito.any() ) ).willReturn( deliveryArea );
         Optional<DeliveryAreaDTO> deliveryAreaReturn = deliveryAreaService.create( deliveryAreaCreateDTO );
         Assertions.assertTrue( compareDTO( deliveryAreaDTO, deliveryAreaReturn.get() ) );
 
         // Case: DB ids numbers dont match up, will return empty Optional
-        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaCreateDTO.getDeliveryBoyIds() ) ).willReturn( Collections.emptyList() );
+        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaCreateDTO.deliveryBoyIds() ) ).willReturn( Collections.emptyList() );
         deliveryAreaReturn = deliveryAreaService.create( deliveryAreaCreateDTO );
         Assertions.assertTrue(  deliveryAreaReturn.isEmpty()  );
     }
@@ -63,11 +63,11 @@ class DeliveryAreaServiceTest {
         DeliveryBoy deliveryBoy = new DeliveryBoy( "Test name", "Test surname", "Test phone number", Collections.emptyList() );
         DeliveryArea deliveryArea = new DeliveryArea( "Test name",List.of( deliveryBoy ) );
         DeliveryAreaCreateDTO deliveryAreaUpdated = new DeliveryAreaCreateDTO("New Test name", List.of( deliveryBoy.getId() ) );
-        DeliveryAreaDTO expectedDeliveryArea = new DeliveryAreaDTO( deliveryArea.getId(), deliveryAreaUpdated.getName(), deliveryAreaUpdated.getDeliveryBoyIds() );
+        DeliveryAreaDTO expectedDeliveryArea = new DeliveryAreaDTO( deliveryArea.getId(), deliveryAreaUpdated.name(), deliveryAreaUpdated.deliveryBoyIds() );
 
         // Case: Delivery Area is found, delivery boys are found, returns the updated delivery area DTO
         BDDMockito.given( deliveryAreaRepository.findById( deliveryArea.getId() ) ).willReturn( Optional.of( deliveryArea ) );
-        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaUpdated.getDeliveryBoyIds() ) ).willReturn( List.of( deliveryBoy ) );
+        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaUpdated.deliveryBoyIds() ) ).willReturn( List.of( deliveryBoy ) );
         Optional<DeliveryAreaDTO> deliveryAreaReturn = deliveryAreaService.update( deliveryArea.getId(), deliveryAreaUpdated );
         Assertions.assertTrue( compareDTO( expectedDeliveryArea, deliveryAreaReturn.get() ) );
 
@@ -78,7 +78,7 @@ class DeliveryAreaServiceTest {
 
         // Case: Delivery boys are not found, returns Optional empty
         BDDMockito.given( deliveryAreaRepository.findById( deliveryArea.getId() ) ).willReturn( Optional.of( deliveryArea ) );
-        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaUpdated.getDeliveryBoyIds() ) ).willReturn( Collections.emptyList() );
+        BDDMockito.given( deliveryBoyRepository.findAllById( deliveryAreaUpdated.deliveryBoyIds() ) ).willReturn( Collections.emptyList() );
         deliveryAreaReturn = deliveryAreaService.update( deliveryArea.getId(), deliveryAreaUpdated );
         Assertions.assertTrue(  deliveryAreaReturn.isEmpty()  );
 
@@ -144,8 +144,8 @@ class DeliveryAreaServiceTest {
 
     // Private method used for comparing DTO delivery area objects
     private boolean compareDTO ( DeliveryAreaDTO a, DeliveryAreaDTO b ) {
-        return (( a.getId() == b.getId() ) &&
-                ( a.getName().equals(b.getName()) ) &&
-                ( a.getDeliveryBoyIds().equals( b.getDeliveryBoyIds() ) ) ) ;
+        return (( a.id() == b.id() ) &&
+                ( a.name().equals(b.name()) ) &&
+                ( a.deliveryBoyIds().equals( b.deliveryBoyIds() ) ) ) ;
     }
 }

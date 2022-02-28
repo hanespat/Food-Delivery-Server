@@ -33,11 +33,11 @@ public class DeliveryAreaService {
     public Optional<DeliveryAreaDTO> create (DeliveryAreaCreateDTO deliveryAreaDTO ) {
 
         // Get delivery boys, if the numbers dont match, just return empty and controller will throw an error
-        List<DeliveryBoy> deliveryBoys = deliveryBoyRepository.findAllById( deliveryAreaDTO.getDeliveryBoyIds() );
-        if ( deliveryBoys.size() != deliveryAreaDTO.getDeliveryBoyIds().size() )
+        List<DeliveryBoy> deliveryBoys = deliveryBoyRepository.findAllById( deliveryAreaDTO.deliveryBoyIds() );
+        if ( deliveryBoys.size() != deliveryAreaDTO.deliveryBoyIds().size() )
             return Optional.empty();
 
-        DeliveryArea deliveryArea = new DeliveryArea( deliveryAreaDTO.getName(), deliveryBoys );
+        DeliveryArea deliveryArea = new DeliveryArea( deliveryAreaDTO.name(), deliveryBoys );
         return Optional.of( toDTO( deliveryAreaRepository.save( deliveryArea ) ) );
 
     }
@@ -53,13 +53,13 @@ public class DeliveryAreaService {
             return Optional.empty();
 
         // Get delivery boys, if the numbers dont match, just return empty and controller will throw an error
-        List<DeliveryBoy> deliveryBoys = deliveryBoyRepository.findAllById( deliveryAreaDTO.getDeliveryBoyIds() );
-        if ( deliveryBoys.size() != deliveryAreaDTO.getDeliveryBoyIds().size() )
+        List<DeliveryBoy> deliveryBoys = deliveryBoyRepository.findAllById( deliveryAreaDTO.deliveryBoyIds() );
+        if ( deliveryBoys.size() != deliveryAreaDTO.deliveryBoyIds().size() )
             return Optional.empty();
         System.out.println( deliveryBoys.size() );
 
         // Update the found delivery area
-        optionalDeliveryArea.get().setName( deliveryAreaDTO.getName() );
+        optionalDeliveryArea.get().setName( deliveryAreaDTO.name() );
         optionalDeliveryArea.get().setDeliveryBoys( deliveryBoys );
         return toDTO( optionalDeliveryArea );
     }

@@ -45,13 +45,13 @@ public class DeliveryBoyServiceTest {
         DeliveryBoyCreateDTO deliveryBoyCreateDTO = new DeliveryBoyCreateDTO( deliveryBoy.getName(), deliveryBoy.getSurname(), deliveryBoy.getPhoneNumber(), List.of( deliveryArea.getId() ) );
 
         // Case: Area ids are found, new deliveryBoy is created and saved, method returns DTO of that new deliveryBoy
-        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyCreateDTO.getDeliveryAreaIds() ) ).willReturn( List.of( deliveryArea ) );
+        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyCreateDTO.deliveryAreaIds() ) ).willReturn( List.of( deliveryArea ) );
         BDDMockito.given( deliveryBoyRepository.save( Mockito.any() ) ).willReturn( deliveryBoy );
         Optional<DeliveryBoyDTO> deliveryBoyReturn = deliveryBoyService.create( deliveryBoyCreateDTO );
         Assertions.assertTrue( compareDTO( deliveryBoyDTO, deliveryBoyReturn.get() ) );
 
         // Case: Area ids numbers dont match up, will return empty Optional
-        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyCreateDTO.getDeliveryAreaIds() ) ).willReturn( Collections.emptyList() );
+        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyCreateDTO.deliveryAreaIds() ) ).willReturn( Collections.emptyList() );
         deliveryBoyReturn = deliveryBoyService.create( deliveryBoyCreateDTO );
         Assertions.assertTrue(  deliveryBoyReturn.isEmpty()  );
     }
@@ -62,10 +62,10 @@ public class DeliveryBoyServiceTest {
         DeliveryArea deliveryArea = new DeliveryArea( "Test name", Collections.emptyList() );
         DeliveryBoy deliveryBoy = new DeliveryBoy( "Test name", "Test surname", "Test phone number", List.of( deliveryArea ) );
         DeliveryBoyCreateDTO deliveryBoyUpdated = new DeliveryBoyCreateDTO("New Test name", "New Test surname", "New Test phone number", List.of( deliveryArea.getId() ) );
-        DeliveryBoyDTO expectedDeliveryBoy = new DeliveryBoyDTO( deliveryBoy.getId(), deliveryBoyUpdated.getName(), deliveryBoyUpdated.getSurname(), deliveryBoyUpdated.getPhoneNumber(), List.of( deliveryArea.getId() ) );
+        DeliveryBoyDTO expectedDeliveryBoy = new DeliveryBoyDTO( deliveryBoy.getId(), deliveryBoyUpdated.name(), deliveryBoyUpdated.surname(), deliveryBoyUpdated.phoneNumber(), List.of( deliveryArea.getId() ) );
 
         // Case: Delivery boy is found, delivery areas are found, returns the updated delivery boy DTO
-        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyUpdated.getDeliveryAreaIds() ) ).willReturn( List.of( deliveryArea ) );
+        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyUpdated.deliveryAreaIds() ) ).willReturn( List.of( deliveryArea ) );
         BDDMockito.given( deliveryBoyRepository.findById( deliveryBoy.getId() ) ).willReturn( Optional.of( deliveryBoy ) );
         Optional<DeliveryBoyDTO> deliveryBoyReturn = deliveryBoyService.update( deliveryBoy.getId(), deliveryBoyUpdated );
         Assertions.assertTrue( compareDTO( expectedDeliveryBoy, deliveryBoyReturn.get() ) );
@@ -77,7 +77,7 @@ public class DeliveryBoyServiceTest {
 
         // Case: Delivery areas are not found, returns Optional empty
         BDDMockito.given( deliveryBoyRepository.findById( deliveryBoy.getId() ) ).willReturn( Optional.of( deliveryBoy ) );
-        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyUpdated.getDeliveryAreaIds() ) ).willReturn( Collections.emptyList() );
+        BDDMockito.given( deliveryAreaRepository.findAllById( deliveryBoyUpdated.deliveryAreaIds() ) ).willReturn( Collections.emptyList() );
         deliveryBoyReturn = deliveryBoyService.update( deliveryBoy.getId(), deliveryBoyUpdated );
         Assertions.assertTrue(  deliveryBoyReturn.isEmpty()  );
     }
@@ -156,11 +156,11 @@ public class DeliveryBoyServiceTest {
 
     // Private method used for comparing DTO delivery boy objects
     private boolean compareDTO ( DeliveryBoyDTO a, DeliveryBoyDTO b ) {
-        return ( ( a.getId() == b.getId() ) &&
-                ( a.getName().equals(b.getName()) ) &&
-                ( a.getSurname().equals(b.getSurname()) ) &&
-                ( a.getPhoneNumber().equals(b.getPhoneNumber())) &&
-                a.getDeliveryAreaIds().equals( b.getDeliveryAreaIds() )) ;
+        return ( ( a.id() == b.id() ) &&
+                ( a.name().equals(b.name()) ) &&
+                ( a.surname().equals(b.surname()) ) &&
+                ( a.phoneNumber().equals(b.phoneNumber())) &&
+                a.deliveryAreaIds().equals( b.deliveryAreaIds() )) ;
     }
 
 

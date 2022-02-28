@@ -29,15 +29,15 @@ public class DeliveryBoyService {
     public Optional<DeliveryBoyDTO> create ( DeliveryBoyCreateDTO deliveryBoyDTO ) {
 
         // Get delivery areas, if the numbers dont match, return empty and controller will throw an error
-        List<DeliveryArea> deliveryAreas = deliveryAreaRepository.findAllById( deliveryBoyDTO.getDeliveryAreaIds() );
-        if ( deliveryAreas.size() != deliveryBoyDTO.getDeliveryAreaIds().size() )
+        List<DeliveryArea> deliveryAreas = deliveryAreaRepository.findAllById( deliveryBoyDTO.deliveryAreaIds() );
+        if ( deliveryAreas.size() != deliveryBoyDTO.deliveryAreaIds().size() )
             return Optional.empty();
 
         return Optional.of(toDTO ( deliveryBoyRepository.save (
                 new DeliveryBoy(
-                        deliveryBoyDTO.getName(),
-                        deliveryBoyDTO.getSurname(),
-                        deliveryBoyDTO.getPhoneNumber(),
+                        deliveryBoyDTO.name(),
+                        deliveryBoyDTO.surname(),
+                        deliveryBoyDTO.phoneNumber(),
                         deliveryAreas
                 ) ) ) );
     }
@@ -66,14 +66,14 @@ public class DeliveryBoyService {
             return toDTO( optionalDeliveryBoy );
 
         // Try to find delivery areas, if the numbers dont match, just return and controller with throw error
-        List<DeliveryArea> deliveryAreas = deliveryAreaRepository.findAllById( deliveryBoyDTO.getDeliveryAreaIds() );
-        if ( deliveryAreas.size() != deliveryBoyDTO.getDeliveryAreaIds().size() )
+        List<DeliveryArea> deliveryAreas = deliveryAreaRepository.findAllById( deliveryBoyDTO.deliveryAreaIds() );
+        if ( deliveryAreas.size() != deliveryBoyDTO.deliveryAreaIds().size() )
             return Optional.empty();
 
         // Update the found delivery boy
-        optionalDeliveryBoy.get().setName( deliveryBoyDTO.getName() );
-        optionalDeliveryBoy.get().setSurname( deliveryBoyDTO.getSurname() );
-        optionalDeliveryBoy.get().setPhoneNumber( deliveryBoyDTO.getPhoneNumber() );
+        optionalDeliveryBoy.get().setName( deliveryBoyDTO.name() );
+        optionalDeliveryBoy.get().setSurname( deliveryBoyDTO.surname() );
+        optionalDeliveryBoy.get().setPhoneNumber( deliveryBoyDTO.phoneNumber() );
         optionalDeliveryBoy.get().setDeliveryAreas( deliveryAreas );
         return toDTO( optionalDeliveryBoy );
     }
